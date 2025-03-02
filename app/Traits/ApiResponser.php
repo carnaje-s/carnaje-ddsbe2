@@ -1,27 +1,32 @@
 <?php
- namespace App\Traits;
- use Illuminate\Http\Response;
- trait ApiResponser
- {
-    /**
-     * Build success response
-     * @param  string|array $data
-     * @param  int $code
-     * @return Illuminate\Http\JsonResponse
-     */
-    public function successResponse($data, $code = Response::HTTP_OK)
-    {
-        return response()->json(['data' => $data], $code);
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use App\Models\User;
+use App\Traits\ApiResponser;
+use DB;
+
+class UserController extends Controller
+{
+    use ApiResponser;
+    private $request;
+
+    public function __construct(Request $request){
+        $this->request = $request;
     }
-    /**
-     * Build error responses
-     * @param  string|array $message
-     * @param  int $code
-     * @return Illuminate\Http\JsonResponse
-     */
-    public function errorResponse($message, $code)
-    {
- return response()->json(['error' => $message, 'code' => $code], 
-$code);
+    public function getUsers(){
+        
+        $users = DB::connection('mysql')
+        ->select("Select * from tbluser");
+        //$users = User::all();  before 3a
+       // return response()->json($users, 200);
+       return $this->successResponse($users);
     }
- }
+
+    public function index(){
+        $users = User::all();
+        return $this->successResponse($users);
+    }
+}
