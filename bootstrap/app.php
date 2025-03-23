@@ -23,6 +23,9 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+$app->withFacades();
+$app->withEloquent();
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -33,10 +36,6 @@ $app = new Laravel\Lumen\Application(
 | your own bindings here if you like or you can make another file.
 |
 */
-
-$app->withFacades();
-
-$app->withEloquent();
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
