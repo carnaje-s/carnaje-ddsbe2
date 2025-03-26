@@ -68,4 +68,13 @@ class UserController extends Controller
         $user->save();
         return $this->successResponse($user);
     }
+
+    public function delete($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return $this->successResponse('User deleted successfully');
+    
+    }
 }

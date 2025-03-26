@@ -3,6 +3,7 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
 $router->get('/users', ['uses' => 'UserController@getUsers']);
 
 $router->group(['prefix' => 'api'], function () use ($router) {
