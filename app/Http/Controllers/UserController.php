@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function getUsers()
     {
-        $users = DB::connection('mysql')->select("Select * from tbl_site2");
+        $users = DB::connection('mysql')->select("Select * from tbl_user");
         return $this->successResponse($users);
     }
 
@@ -30,14 +30,18 @@ class UserController extends Controller
         return $this->successResponse($users);
     }
 
-    public function addUser(Request $request)
+    public function add(Request $request)
     {
         $rules = [
             'username' => 'required|max:20',
             'password' => 'required|max:20',
             'gender' => 'required|in:Male,Female',
+            'jobid' => 'required|numeric|min:0|not_in:0',
         ];
+
         $this->validate($request, $rules);
+
+        $userjob = UserJob::findOrFail($request->jobid);
         $user = User::create($request->all());
         return $this->successResponse($user, Response::HTTP_CREATED);
     }
