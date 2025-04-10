@@ -27,21 +27,20 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return $this->successResponse($users);
+        return response()->json([
+            'data' => $users->values(),
+            'site' => 1
+        ]);
     }
 
-    public function add(Request $request)
+    public function addUser(Request $request)
     {
         $rules = [
             'username' => 'required|max:20',
             'password' => 'required|max:20',
             'gender' => 'required|in:Male,Female',
-            'jobid' => 'required|numeric|min:0|not_in:0',
         ];
-
         $this->validate($request, $rules);
-
-        $userjob = UserJob::findOrFail($request->jobid);
         $user = User::create($request->all());
         return $this->successResponse($user, Response::HTTP_CREATED);
     }
